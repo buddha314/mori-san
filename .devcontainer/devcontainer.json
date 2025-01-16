@@ -1,0 +1,7 @@
+{
+    "name": "Mori Backend",
+    "build": {
+        "dockerfile": "../Dockerfile",
+        "context": "../",
+    }
+}
