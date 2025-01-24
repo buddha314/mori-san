@@ -39,3 +39,10 @@ RUN /bin/bash -c "source '$HOME/.cargo/env' ; make install-scli install-sclc ins
 # Add application and scallop files
 WORKDIR /root/project
 COPY . .
+
+WORKDIR /root/src/scallop
+RUN pip install maturin
+RUN /bin/bash -c "source '$HOME/.cargo/env' ; make install-scallopy"
+
+WORKDIR /workspaces/mori-san
+#RUN poetry install
