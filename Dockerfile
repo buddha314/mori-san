@@ -39,7 +39,6 @@ RUN pip install poetry cargo
 
 # Configure Poetry to avoid virtualenv creation
 RUN poetry config virtualenvs.create false
-RUN poetry install
 
 # Install scallop from source
 WORKDIR /root/src
@@ -57,7 +56,9 @@ WORKDIR /root/project
 #COPY ./bins/sclrepl /root/packages/scallop/bin/sclrepl
 COPY . .
 
-
 WORKDIR /root/src/scallop
 RUN pip install maturin
 RUN /bin/bash -c "source '$HOME/.cargo/env' ; make install-scallopy"
+
+WORKDIR /workspaces/mori-san
+#RUN poetry install
