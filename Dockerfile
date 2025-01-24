@@ -30,19 +30,21 @@ RUN pip install poetry cargo maturin
 RUN poetry config virtualenvs.create false
 
 # Install scallop from source
-WORKDIR /root/src/scallop
+WORKDIR /root
+RUN git clone https://github.com/scallop-lang/scallop.git
+WORKDIR /root/scallop
+
+WORKDIR /root/scallop
 COPY scallop .
 
 # Build scallop
-RUN /bin/bash -c "source '$HOME/.cargo/env' ; make install-scli install-sclc install-sclrepl install-scallopy"
+RUN pip install maturin
+RUN /bin/bash -c "source '$HOME/.cargo/env' ; make install-scli"
+RUN /bin/bash -c "source '$HOME/.cargo/env' ; make install-sclc"
+RUN /bin/bash -c "source '$HOME/.cargo/env' ; make install-sclrepl"
+RUN /bin/bash -c "source '$HOME/.cargo/env' ; make install-scallopy"
 
 # Add application and scallop files
-WORKDIR /root/project
-COPY . .
-
-WORKDIR /root/src/scallop
-RUN pip install maturin
-RUN /bin/bash -c "source '$HOME/.cargo/env' ; make install-scallopy"
 
 WORKDIR /workspaces/mori-san
 #RUN poetry install
