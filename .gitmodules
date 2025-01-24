@@ -1,0 +1,3 @@
+[submodule "scallop"]
+	path = scallop
+	url = https://github.com/scallop-lang/scallop.git
