@@ -39,6 +39,7 @@ RUN pip install poetry cargo
 
 # Configure Poetry to avoid virtualenv creation
 RUN poetry config virtualenvs.create false
+RUN poetry install
 
 # Install scallop from source
 WORKDIR /root/src
