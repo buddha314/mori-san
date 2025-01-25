@@ -35,6 +35,7 @@ def process_whiteboard(alarm_whiteboard):
     
     all_rules = [x for x in alarm_whiteboard['nodes'] if (x['logic_class']).startswith('rule')]
     #print(all_rules)
+    rule_strings = []
     for rule in all_rules:
         print(rule)
         inbound_edges = [(ind, x["from_node"]) for ind, x in 
@@ -44,9 +45,31 @@ def process_whiteboard(alarm_whiteboard):
         if rule['logic_class'] == 'rule_and':
             rule_str = "{r}() = {rels}".format(
                 r=rule['id'],
-                rels = ",".join(x[1]+"({i})".format(i=string.ascii_lowercase[x[0]]) for x in inbound_edges)
+                rels = ", ".join(x[1]+"({i})".format(i=string.ascii_lowercase[x[0]]) for x in inbound_edges)
                 )
             print(rule_str)
+            rule_strings.append(rule_str)
             ctx.add_rule(rule_str)
-    return all_relations
+    
+    ctx.run()
+    rules = []
+    for i, rule in enumerate(all_rules):
+        j = {}
+        j["rule"] = rule['id']
+        j["rule_string"] = rule_strings[i] 
+        conclusions = []
+        for prob, tup in ctx.relation(rule['id']):
+            x = {}
+            x['probability'] = prob
+            x['tuples'] = tup
+            conclusions.append(x)
+            print(prob, tup)
+        j["conclusions"] = conclusions
+        rules.append(j)
+    
+    # Format output
+    output = {}
+    output["relations"] = all_relations
+    output["rules"] = rules
+    return output
 
