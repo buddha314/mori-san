@@ -55,14 +55,17 @@ def process_whiteboard(alarm_whiteboard):
     rules = []
     for i, rule in enumerate(all_rules):
         j = {}
-        j["rule"] = rule['id']
+        j["node_id"] = rule['id']
         j["rule_string"] = rule_strings[i] 
         conclusions = []
+        k = 0
         for prob, tup in ctx.relation(rule['id']):
             x = {}
+            x['id'] = k
             x['probability'] = prob
             x['tuples'] = tup
             conclusions.append(x)
+            k += 1
             print(prob, tup)
         j["conclusions"] = conclusions
         rules.append(j)
