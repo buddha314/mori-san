@@ -21,4 +21,6 @@ def test_alarm_whiteboard(client):
         alarm_whiteboard = json.load(f)
         response = client.post("/reason", json={"alarm_whiteboard": alarm_whiteboard})
         assert response.status_code == 200
-        print(response.get_json())
+        j = response.get_json()
+        print(json.dumps(j, indent=2))
+        assert len(j) == 3

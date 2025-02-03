@@ -28,9 +28,10 @@ COPY poetry.lock pyproject.toml ./
 
 RUN poetry install --no-interaction --no-ansi --no-root
 # Install scallop from source
-WORKDIR /root/project/scallop
-COPY scallop .
-# Build scallop
+WORKDIR /root
+RUN git clone https://github.com/scallop-lang/scallop.git
+WORKDIR /root/scallop
+
 RUN make install-scli
 RUN make install-sclc
 RUN make install-sclrepl
