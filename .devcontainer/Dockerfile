@@ -19,14 +19,21 @@ RUN conda update -y conda && \
     conda clean -afy
 
 # Install Poetry and cargo
+WORKDIR /workspaces/mori-san
 RUN pip install poetry
 # Configure Poetry to avoid virtualenv creation
 RUN poetry config virtualenvs.create false
+COPY poetry.lock .
+COPY pyproject.toml . 
+RUN poetry install --no-interaction --no-ansi --no-root
+#RUN poetry install
 
 WORKDIR /root/project
-COPY poetry.lock pyproject.toml ./
 
-RUN poetry install --no-interaction --no-ansi --no-root
+# Clone scallop
+RUN git clone https://github.com/scallop-lang/scallop
+
+
 # Install scallop from source
 WORKDIR /root/project/scallop
 COPY scallop .
@@ -36,4 +43,4 @@ RUN make install-sclc
 RUN make install-sclrepl
 RUN make install-scallopy
 
-WORKDIR /workspace
+WORKDIR /workspaces/mori-san
