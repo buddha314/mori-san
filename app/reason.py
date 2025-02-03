@@ -4,13 +4,14 @@ import random
 import string
 # Create basic reason blueprint
 
-reason = Blueprint('reason', __name__)
+reason = Blueprint("reason", __name__)
+
 
 # Define a route for the blueprint
 # add POST to the route to accept data
-@reason.route('/reason', methods=['GET', 'POST'])
+@reason.route("/reason", methods=["GET", "POST"])
 def index():
-    if request.method == 'POST':
+    if request.method == "POST":
         # pull the alarm_whiteboard from the request json
         alarm_whiteboard = request.get_json()["alarm_whiteboard"]
         output = process_whiteboard(alarm_whiteboard)
@@ -75,4 +76,5 @@ def process_whiteboard(alarm_whiteboard):
     output["relations"] = all_relations
     output["rules"] = rules
     return output
+
 

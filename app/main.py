@@ -11,6 +11,7 @@ app = Flask(__name__)
 app.register_blueprint(reason)
 
 asgi_app = WsgiToAsgi(app)
-if __name__ == '__main__':
+if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(asgi_app, host="127.0.0.1", port=8000)

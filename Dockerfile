@@ -1,7 +1,7 @@
-FROM --platform=linux/amd64 ubuntu:24.04
+FROM continuumio/miniconda3:24.11.1-0
 USER root
 
-ENV PATH="/root/.cargo/bin:/root/miniconda3/bin:${PATH}"
+ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Inspired by https://github.com/scallop-lang/scallop-docker/blob/main/Dockerfile
 # Install system dependencies
@@ -13,38 +13,32 @@ RUN curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --defau
 RUN rustup toolchain install nightly --allow-downgrade --profile minimal --component miri
 RUN rustup default nightly
 
-# Install Miniconda
-RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh && \
-    bash ./Miniconda3-latest-Linux-x86_64.sh -b && \
-    rm ./Miniconda3-latest-Linux-x86_64.sh
-
 # Install Python 3.10
 RUN conda update -y conda && \
     conda create --name myenv python=3.10 -y && \
     conda clean -afy
 
 # Install Poetry and cargo
-RUN pip install poetry cargo maturin
-
+RUN pip install poetry
 # Configure Poetry to avoid virtualenv creation
 RUN poetry config virtualenvs.create false
 
+WORKDIR /root/project
+COPY poetry.lock pyproject.toml ./
+
+RUN poetry install --no-interaction --no-ansi --no-root
 # Install scallop from source
 WORKDIR /root
 RUN git clone https://github.com/scallop-lang/scallop.git
 WORKDIR /root/scallop
 
-WORKDIR /root/scallop
-COPY scallop .
+RUN make install-scli
+RUN make install-sclc
+RUN make install-sclrepl
+RUN make install-scallopy
+RUN rm -rf /root/project
 
-# Build scallop
-RUN pip install maturin
-RUN /bin/bash -c "source '$HOME/.cargo/env' ; make install-scli"
-RUN /bin/bash -c "source '$HOME/.cargo/env' ; make install-sclc"
-RUN /bin/bash -c "source '$HOME/.cargo/env' ; make install-sclrepl"
-RUN /bin/bash -c "source '$HOME/.cargo/env' ; make install-scallopy"
+WORKDIR /app
+COPY app .
 
-# Add application and scallop files
-
-WORKDIR /workspaces/mori-san
-#RUN poetry install
+ENTRYPOINT ["poetry", "run", "python", "app.main"]
