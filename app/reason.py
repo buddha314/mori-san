@@ -52,7 +52,10 @@ def process_whiteboard(alarm_whiteboard):
             rule_strings.append(rule_str)
             ctx.add_rule(rule_str)
     
+    # Actually run the analysis
     ctx.run()
+    
+    # All nodes specified as rules are now complete
     rules = []
     for i, rule in enumerate(all_rules):
         j = {}
@@ -71,6 +74,22 @@ def process_whiteboard(alarm_whiteboard):
         j["conclusions"] = conclusions
         rules.append(j)
     
+    # Return to relations for possible conclusions
+    for i, rel in enumerate(all_relations):
+        conclusions = []
+        k = 0
+        for prob, tup in ctx.relation(rel['id']):
+            x = {}
+            x['id'] = k
+            x['probability'] = prob
+            x['tuples'] = tup
+            conclusions.append(x)
+            k += 1
+            print(prob, tup)
+        all_relations[i]["conclusions"] = conclusions
+
+
+
     # Format output
     output = {}
     output["relations"] = all_relations

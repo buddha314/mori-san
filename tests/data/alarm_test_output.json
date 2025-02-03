@@ -1,0 +1,68 @@
+{
+  "relations": [
+    {
+      "class": "GraphNode",
+      "conclusions": [
+        {
+          "id": 0,
+          "probability": 0.2,
+          "tuples": [
+            "flood"
+          ]
+        },
+        {
+          "id": 1,
+          "probability": 0.8,
+          "tuples": [
+            "quake"
+          ]
+        }
+      ],
+      "data": {
+        "arity_types": [
+          "str",
+          "str"
+        ],
+        "logic_class": "relation",
+        "relation": "disaster"
+      },
+      "id": "relation_0",
+      "logic_class": "relation"
+    },
+    {
+      "class": "GraphNode",
+      "conclusions": [
+        {
+          "id": 0,
+          "probability": 0.3,
+          "tuples": [
+            "burglary"
+          ]
+        }
+      ],
+      "data": {
+        "arity_types": [
+          "str",
+          "str"
+        ],
+        "logic_class": "relation",
+        "relation": "crime"
+      },
+      "id": "relation_1",
+      "logic_class": "relation"
+    }
+  ],
+  "rules": [
+    {
+      "conclusions": [
+        {
+          "id": 0,
+          "probability": 0.252,
+          "tuples": []
+        }
+      ],
+      "node_id": "rulenode_0",
+      "rule_string": "rulenode_0() = relation_0(d), relation_1(e)"
+    }
+  ]
+}

@@ -23,4 +23,5 @@ def test_alarm_whiteboard(client):
         assert response.status_code == 200
         j = response.get_json()
         print(json.dumps(j, indent=2))
+        open("tests/data/alarm_test_output.json", "w").write(json.dumps(j, indent=2))
         assert len(j) == 3
