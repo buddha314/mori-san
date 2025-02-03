@@ -19,11 +19,10 @@ RUN conda update -y conda && \
     conda clean -afy
 
 # Install Poetry and cargo
+WORKDIR /workspaces/mori-san
 RUN pip install poetry
 # Configure Poetry to avoid virtualenv creation
 RUN poetry config virtualenvs.create false
-
-WORKDIR /root/project
 COPY poetry.lock pyproject.toml ./
 
 RUN poetry install --no-interaction --no-ansi --no-root
@@ -38,7 +37,6 @@ RUN make install-sclrepl
 RUN make install-scallopy
 RUN rm -rf /root/project
 
-WORKDIR /app
-COPY app .
+WORKDIR /workspaces/mori-san
 
 ENTRYPOINT ["poetry", "run", "python", "app.main"]

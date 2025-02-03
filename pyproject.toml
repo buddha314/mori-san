@@ -12,6 +12,13 @@ requires-python = ">=3.10,<4.0"
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
 
+[tool.poetry]
+name = "mori-san"
+version = "0.1.0"
+description = ""
+authors = ["buddha_314"]
+readme = "README.md"
+
 [tool.poetry.dependencies]
 flask = ">=3.1.0,<4.0.0"
 maturin = "^1.8.1"
@@ -20,8 +27,7 @@ black = "^24.10.0"
 flake8 = "^7.1.1"
 flake8-pyproject = "^1.2.3"
 asgiref = "^3.8.1"
-
-[poetry.group.dev.dependencies]
+pytest = "^8.3.4"
 
 [tool.black]
 line-length = 120
@@ -31,33 +37,3 @@ target-version = ["py310"]
 max-line-length = 120
 ignore = "E203, E501, W503"
 exclude = "migrations"
-=======
-[project]
-name = "mori-san"
-version = "0.1.0"
-description = ""
-authors = [
-    {name = "buddha_314"}
-]
-readme = "README.md"
-requires-python = ">=3.10"
-dependencies = [
-    "flask (>=3.1.0,<4.0.0)",
-    "flask-restful (>=0.3.10,<0.4.0)",
-    "uvicorn (>=0.34.0,<0.35.0)",
-    "pytest (>=8.3.4,<9.0.0)",
-    "asgiref (>=3.8.1,<4.0.0)"
-]
-
-
-[build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.scripts]
-start = "app.main:main"
-
-[tool.poetry]
-packages = [
-    { include = "app" }
-
