@@ -26,21 +26,16 @@ RUN poetry config virtualenvs.create false
 COPY poetry.lock .
 COPY pyproject.toml . 
 RUN poetry install --no-interaction --no-ansi --no-root
-#RUN poetry install
-
-WORKDIR /root/project
-
-# Clone scallop
-RUN git clone https://github.com/scallop-lang/scallop
-
 
 # Install scallop from source
 WORKDIR /root/project/scallop
 COPY scallop .
 # Build scallop
-RUN make install-scli
-RUN make install-sclc
-RUN make install-sclrepl
-RUN make install-scallopy
-
+RUN make install-scli install-sclc install-sclrepl install-scallopy
+# Clean up
+WORKDIR /root
+RUN rm -rf project
+# Set the default shell to bash rather than sh
+ENV SHELL /bin/bash
+# Set default workspace
 WORKDIR /workspaces/mori-san
